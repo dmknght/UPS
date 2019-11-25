@@ -1,5 +1,8 @@
 import gintro / [gtk, gobject]
 
+proc stop(w: Window) =
+  mainQuit()
+
 proc main =
   gtk.init()
   let mainBoard = newWindow()
@@ -46,6 +49,7 @@ proc main =
   mainBoard.add(boxMain)
 
   mainBoard.showAll
+  mainBoard.connect("destroy", stop) # TODO hide in icon tray
   gtk.main()
 
 main()
