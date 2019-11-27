@@ -59,11 +59,15 @@ proc main =
   let
     labelOptions = newLabel("Options")
     boxOptions = newBox(Orientation.horizontal, 5)
-    btnSettings = newButton("Settings")
+    btnSetScan = newButton("Scan Settings")
+    btnSetSchedule = newButton("Schedule Scan")
+    btnSetUpdate = newButton("Update Settings") # auto / manual update; proxy update (todo patch db)
   
   labelOptions.setXalign(0.0)
   boxMain.add(labelOptions)
-  boxOptions.packStart(btnSettings, false, true, 3)
+  boxOptions.packStart(btnSetScan, false, true, 3)
+  boxOptions.packStart(btnSetSchedule, false, true, 3)
+  boxOptions.packStart(btnSetUpdate, false, true, 3)
 
   boxMain.packStart(boxOptions, false, true, 3)
   mainBoard.add(boxMain)
