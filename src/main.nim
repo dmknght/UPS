@@ -1,4 +1,5 @@
 import gintro / [gtk, gobject]
+import clam / scan
 
 proc stop(w: Window) =
   mainQuit()
@@ -17,10 +18,15 @@ proc main =
     btnQuickScan = newButton("Quick Scan")
     btnFullScan = newButton("Full Scan")
     btnCustomScan = newButton("Custom Scan")
+    # btnTest = newButton()
     # TODO online analysis + repu scan
 
+  boxScan.setBorderWidth(3)
+  btnQuickScan.connect("clicked", scan.quickScan)
+  # btnQuickScan.setIconName("icons/search.png")
   labelScan.setXalign(0.0)
   boxMain.add(labelScan)
+  # boxScan.packStart(btnTest, false, true, 3)
   boxScan.packStart(btnQuickScan, false, true, 3)
   boxScan.packStart(btnFullScan, false, true, 3)
   boxScan.packStart(btnCustomScan, false, true, 3)
@@ -61,6 +67,7 @@ proc main =
 
   boxMain.packStart(boxOptions, false, true, 3)
   mainBoard.add(boxMain)
+  mainBoard.setBorderWidth(3)
 
   mainBoard.showAll
   mainBoard.connect("destroy", stop) # TODO hide in icon tray
