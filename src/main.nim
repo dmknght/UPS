@@ -2,6 +2,29 @@ import gintro / [gtk, gobject]
 import clam / scan
 
 
+proc sectionScan(boxMain: Box) =
+  let
+    boxScan = newBox(Orientation.horizontal, 5)
+    labelScan = newLabel("Scan")
+    btnQuickScan = newButton("Quick Scan")
+    btnFullScan = newButton("Full Scan")
+    btnCustomScan = newButton("Custom Scan")
+    imgScan = newImageFromIconName("search", 3)
+    # btnTest = newButton()
+    # TODO online analysis + repu scan
+
+  btnQuickScan.setImage(imgScan)
+  boxScan.setBorderWidth(3)
+  btnQuickScan.connect("clicked", scan.quickScan)
+  # btnQuickScan.setIconName("icons/search.png")
+  labelScan.setXalign(0.0)
+  boxMain.add(labelScan)
+  # boxScan.packStart(btnTest, false, true, 3)
+  boxScan.packStart(btnQuickScan, false, true, 3)
+  boxScan.packStart(btnFullScan, false, true, 3)
+  boxScan.packStart(btnCustomScan, false, true, 3)
+  boxMain.packStart(boxScan, false, true, 3)
+
 proc sectionProtection(boxMain: Box) =
   let
     labelProtection = newLabel("Protection")
@@ -15,27 +38,6 @@ proc sectionProtection(boxMain: Box) =
   boxMain.add(labelProtection)
   boxProtection.packStart(btnUpdate, false, true, 3)
   boxMain.add(boxProtection)
-
-proc sectionScan(boxMain: Box) =
-  let
-    boxScan = newBox(Orientation.horizontal, 5)
-    labelScan = newLabel("Scan")
-    btnQuickScan = newButton("Quick Scan")
-    btnFullScan = newButton("Full Scan")
-    btnCustomScan = newButton("Custom Scan")
-    # btnTest = newButton()
-    # TODO online analysis + repu scan
-
-  boxScan.setBorderWidth(3)
-  btnQuickScan.connect("clicked", scan.quickScan)
-  # btnQuickScan.setIconName("icons/search.png")
-  labelScan.setXalign(0.0)
-  boxMain.add(labelScan)
-  # boxScan.packStart(btnTest, false, true, 3)
-  boxScan.packStart(btnQuickScan, false, true, 3)
-  boxScan.packStart(btnFullScan, false, true, 3)
-  boxScan.packStart(btnCustomScan, false, true, 3)
-  boxMain.packStart(boxScan, false, true, 3)
 
 proc sectionHistory(boxMain: Box) =
   let

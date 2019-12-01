@@ -8,8 +8,7 @@ proc scan(path: string, b: Button, asRoot = false) =
     btnStop = newButton("Stop")
     scanDialog = newDialog()
   scanDialog.title = "Scanning"
-  scanDialog.setDefaultSize(200, 200)
-  scanDialog.add(btnSTop)
+  scanDialog.setDefaultSize(400, 100)
   # scanDialog.add(labelScan)
   scanDialog.showAll
 
