@@ -4,14 +4,12 @@ import gintro / gtk
 
 proc scan(path: string, b: Button, asRoot = false) =
   let
-    labelScan = "Scanning"
-    btnStop = newButton("Stop")
     scanDialog = newDialog()
+    actionStop = scanDialog.addButton("Stop", 0)
+
   scanDialog.title = "Scanning"
   scanDialog.setDefaultSize(400, 100)
-  # scanDialog.add(labelScan)
   scanDialog.showAll
-
 
 
 proc quickScan*(b: Button) =

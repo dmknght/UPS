@@ -10,16 +10,13 @@ proc sectionScan(boxMain: Box) =
     btnFullScan = newButton("Full Scan")
     btnCustomScan = newButton("Custom Scan")
     imgScan = newImageFromIconName("search", 3)
-    # btnTest = newButton()
     # TODO online analysis + repu scan
 
-  btnQuickScan.setImage(imgScan)
   boxScan.setBorderWidth(3)
   btnQuickScan.connect("clicked", scan.quickScan)
-  # btnQuickScan.setIconName("icons/search.png")
   labelScan.setXalign(0.0)
   boxMain.add(labelScan)
-  # boxScan.packStart(btnTest, false, true, 3)
+  btnQuickScan.setImage(imgScan)
   boxScan.packStart(btnQuickScan, false, true, 3)
   boxScan.packStart(btnFullScan, false, true, 3)
   boxScan.packStart(btnCustomScan, false, true, 3)
