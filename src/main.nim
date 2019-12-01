@@ -1,17 +1,22 @@
 import gintro / [gtk, gobject]
 import clam / scan
 
-proc stop(w: Window) =
-  mainQuit()
 
-proc main =
-  gtk.init()
+proc sectionProtection(boxMain: Box) =
   let
-    mainBoard = newWindow()
-    boxMain = newBox(Orientation.vertical, 5)
-  
-  mainBoard.title = "Parrot ClamAV"
+    labelProtection = newLabel("Protection")
+    boxProtection = newBox(Orientation.horizontal, 5)
+    btnUpdate = newButton("Update")
+    # TODO netmon
+    # TODO real time protection
+    # TODO update settings?
 
+  labelProtection.setXalign(0.0)
+  boxMain.add(labelProtection)
+  boxProtection.packStart(btnUpdate, false, true, 3)
+  boxMain.add(boxProtection)
+
+proc sectionScan(boxMain: Box) =
   let
     boxScan = newBox(Orientation.horizontal, 5)
     labelScan = newLabel("Scan")
@@ -32,18 +37,7 @@ proc main =
   boxScan.packStart(btnCustomScan, false, true, 3)
   boxMain.packStart(boxScan, false, true, 3)
 
-  let
-    labelProtection = newLabel("Protection")
-    boxProtection = newBox(Orientation.horizontal, 5)
-    btnUpdate = newButton("Update")
-    # TODO real time protection
-    # TODO update settings?
-
-  labelProtection.setXalign(0.0)
-  boxMain.add(labelProtection)
-  boxProtection.packStart(btnUpdate, false, true, 3)
-  boxMain.add(boxProtection)
-
+proc sectionHistory(boxMain: Box) =
   let
     labelHistory = newLabel("History")
     boxHistory = newBox(Orientation.horizontal, 5)
@@ -56,20 +50,37 @@ proc main =
   boxHistory.packSTart(btnQuaratine, false, true, 3)
   boxMain.add(boxHistory)
 
+proc sectionSettings(boxMain: Box) = 
   let
     labelOptions = newLabel("Options")
     boxOptions = newBox(Orientation.horizontal, 5)
     btnSetScan = newButton("Scan Settings")
     btnSetSchedule = newButton("Schedule Scan")
     btnSetUpdate = newButton("Update Settings") # auto / manual update; proxy update (todo patch db)
-  
+
   labelOptions.setXalign(0.0)
   boxMain.add(labelOptions)
   boxOptions.packStart(btnSetScan, false, true, 3)
   boxOptions.packStart(btnSetSchedule, false, true, 3)
   boxOptions.packStart(btnSetUpdate, false, true, 3)
-
   boxMain.packStart(boxOptions, false, true, 3)
+
+proc stop(w: Window) =
+  mainQuit()
+
+proc main =
+  gtk.init()
+  let
+    mainBoard = newWindow()
+    boxMain = newBox(Orientation.vertical, 5)
+  
+  mainBoard.title = "Parrot ClamAV"
+
+  sectionScan(boxMain)
+  sectionProtection(boxMain)
+  sectionHistory(boxMain)
+  sectionSettings(boxMain)
+
   mainBoard.add(boxMain)
   mainBoard.setBorderWidth(3)
 
