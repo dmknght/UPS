@@ -1,5 +1,5 @@
 import gintro / [gtk, gobject]
-import clam / scan
+import clam / [scan, settings]
 
 
 proc sectionScan(boxMain: Box) =
@@ -68,6 +68,9 @@ proc sectionSettings(boxMain: Box) =
     btnSetUpdate = newButton("Update Settings") # auto / manual update; proxy update (todo patch db)
 
   labelOptions.setXalign(0.0)
+
+  btnSetScan.connect("clicked", settings.stnScan)
+
   boxMain.add(labelOptions)
   boxOptions.packStart(btnSetScan, false, true, 3)
   boxOptions.packStart(btnSetSchedule, false, true, 3)

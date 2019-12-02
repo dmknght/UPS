@@ -10,7 +10,7 @@ proc scan(path: string, b: Button, asRoot = false) =
     # scanned = newLabel("File scanned: ")
     # Threats = newLabel("Threats: ")
     scanProgress = newProgressBar()
-    scanArea = scanDialog.getContentArea()
+    areaScan = scanDialog.getContentArea()
     btnStop = newButton("Stop")
     btnMinimize = newButton("Hide")
     imgStop = newImageFromIconName("exit", 3) # if not compelted else dialog-yes
@@ -25,9 +25,9 @@ proc scan(path: string, b: Button, asRoot = false) =
   boxButtons.packStart(btnMinimize, false, true, 3)
   boxButtons.packStart(btnStop, false, true, 3)
 
-  scanArea.packStart(scanLabel, false, true, 3)
-  scanArea.packStart(scanProgress, false, true, 9)
-  scanArea.packStart(boxButtons, false, true, 0)
+  areaScan.packStart(scanLabel, false, true, 3)
+  areaScan.packStart(scanProgress, false, true, 9)
+  areaScan.packStart(boxButtons, false, true, 0)
   scanDialog.title = "Scanning " & path # TODO Custom scan or something else; add completed to title
   scanDialog.setDefaultSize(400, 100)
   scanDialog.showAll
