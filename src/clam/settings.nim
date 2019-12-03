@@ -1,4 +1,7 @@
-import gintro / gtk
+import gintro / [gtk, gobject]
+
+proc actionCancel(b: Button, d: Dialog) =
+  d.destroy()
 
 proc stnScan*(b: Button) =
   let
@@ -27,6 +30,8 @@ proc stnScan*(b: Button) =
   btnSave.setImage(imgSave)
   btnCancel.setImage(imgCancel)
 
+  btnCancel.connect("clicked", actionCancel, setScanDialog)
+
   boxButtons.packStart(btnSave, false, true, 3)
   boxButtons.packStart(btnCancel, false, true, 3)
 
@@ -48,6 +53,13 @@ proc stnUpdate*(b: Button) =
     labelUpdate = newLabel("Auto update setting")
     labelProxy = newLabel("Proxy setting")
 
+    boxButtons = newBox(Orientation.horizontal, 3)
+
+    btnSave = newButton("Save settings")
+    btnCancel = newButton("Cancel")
+    imgSave = newImageFromIconName("gtk-ok", 3)
+    imgCancel = newImageFromIconName("edit-clear", 3)
+
   labelUpdate.setXalign(0.0)
   labelProxy.setXalign(0.0)
 
@@ -56,6 +68,15 @@ proc stnUpdate*(b: Button) =
   boxOptions.packStart(labelProxy, false, true, 3)
   boxOptions.packStart(btnDoProxy, false, true, 3)
   areaSetting.packStart(boxOptions, false, true, 3)
+
+  btnSave.setImage(imgSave)
+  btnCancel.setImage(imgCancel)
+
+  btnCancel.connect("clicked", actionCancel, updateDialog)
+
+  boxButtons.packStart(btnSave, false, true, 3)
+  boxButtons.packStart(btnCancel, false, true, 3)
+  areaSetting.packStart(boxButtons, false, true, 3)
 
   updateDialog.title = "Update Settings"
   updateDialog.setDefaultSize(200, 100)
