@@ -13,12 +13,14 @@ proc scan(path: string, b: Button, asRoot = false) =
     areaScan = scanDialog.getContentArea()
     btnStop = newButton("Stop")
     btnMinimize = newButton("Hide")
+    # Image variables
     imgStop = newImageFromIconName("exit", 3) # if not compelted else dialog-yes
     imgMinimize = newImageFromIconName("gtk-go-down", 3)
     # TODO minimize button
 
   scanLabel.setXalign(0.0)
 
+  # Set image for buttons
   btnStop.setImage(imgStop)
   btnMinimize.setImage(imgMinimize)
 
@@ -28,6 +30,7 @@ proc scan(path: string, b: Button, asRoot = false) =
   areaScan.packStart(scanLabel, false, true, 3)
   areaScan.packStart(scanProgress, false, true, 9)
   areaScan.packStart(boxButtons, false, true, 0)
+  
   scanDialog.title = "Scanning " & path # TODO Custom scan or something else; add completed to title
   scanDialog.setDefaultSize(400, 100)
   scanDialog.showAll

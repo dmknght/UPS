@@ -70,6 +70,7 @@ proc sectionSettings(boxMain: Box) =
   labelOptions.setXalign(0.0)
 
   btnSetScan.connect("clicked", settings.stnScan)
+  btnSetUpdate.connect("clicked", settings.stnUpdate)
 
   boxMain.add(labelOptions)
   boxOptions.packStart(btnSetScan, false, true, 3)
