@@ -52,7 +52,10 @@ proc sectionHistory(boxMain: Box) =
     boxHistory = newBox(Orientation.horizontal, 5)
     btnLog = newButton("Scan logs")
     btnQuaratine = newButton("Quaratine")
+    imgLog = newImageFromIconName("view-list-compact", 3)
 
+  btnLog.setImage(imgLog)
+  
   labelHistory.setXalign(0.0)
   boxMain.add(labelHistory)
   boxHistory.packStart(btnLog, false, true, 3)
@@ -67,10 +70,15 @@ proc sectionSettings(boxMain: Box) =
     btnSetSchedule = newButton("Schedule Scan")
     btnSetUpdate = newButton("Update Settings") # auto / manual update; proxy update (todo patch db)
 
+    imgSetScan = newImageFromIconName("gtk-zoom-in", 3)
+    imgSetUpdate = newImageFromIconName("view-sort-ascending", 3)
+
   labelOptions.setXalign(0.0)
 
   btnSetScan.connect("clicked", settings.stnScan)
+  btnSetScan.setImage(imgSetScan)
   btnSetUpdate.connect("clicked", settings.stnUpdate)
+  btnSetUpdate.setImage(imgSetUPdate)
 
   boxMain.add(labelOptions)
   boxOptions.packStart(btnSetScan, false, true, 3)
