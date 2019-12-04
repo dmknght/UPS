@@ -17,7 +17,7 @@ proc stnScan*(b: Button) =
     btnHeuristicAlert = newCheckButtonWithLabel("Heuristic alerts")
     btnSave = newButton("Save settings")
     btnCancel = newButton("Cancel")
-    imgSave = newImageFromIconName("gtk-ok", 3)
+    imgSave = newImageFromIconName("dialog-ok", 3)
     imgCancel = newImageFromIconName("edit-clear", 3)
 
   boxOptions.packStart(btnDoRemoveInfected, false, true, 3)

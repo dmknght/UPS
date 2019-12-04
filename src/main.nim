@@ -12,8 +12,8 @@ proc sectionScan(boxMain: Box) =
     btnCustomScan = newButton("Custom Scan")
     # icons
     # imgQuickScan = newImageFromIconName("gtk-find-and-replace", 3)
-    imgQuickScan = newImageFromIconName("gtk-home", 3)
-    imgFullScan = newImageFromIconName("search", 3)
+    imgQuickScan = newImageFromIconName("go-home", 3)
+    imgFullScan = newImageFromIconName("system-search", 3)
     imgCustomScan = newImageFromIconName("folder-new", 3)
     # TODO online analysis + repu scan
 
@@ -35,7 +35,7 @@ proc sectionProtection(boxMain: Box) =
     labelProtection = newLabel("Protection")
     boxProtection = newBox(Orientation.horizontal, 5)
     btnUpdate = newButton("Update")
-    imgUpdate = newImageFromIconName("filesaveas", 3)
+    imgUpdate = newImageFromIconName("document-save-as", 3)
     # TODO netmon
     # TODO real time protection
     # TODO update settings?
@@ -52,7 +52,7 @@ proc sectionHistory(boxMain: Box) =
     boxHistory = newBox(Orientation.horizontal, 5)
     btnLog = newButton("Scan logs")
     btnQuaratine = newButton("Quaratine")
-    imgLog = newImageFromIconName("view-list-compact", 3)
+    imgLog = newImageFromIconName("view-list-compact-symbolic", 3)
 
   btnLog.setImage(imgLog)
   
@@ -70,7 +70,7 @@ proc sectionSettings(boxMain: Box) =
     btnSetSchedule = newButton("Schedule Scan")
     btnSetUpdate = newButton("Update Settings") # auto / manual update; proxy update (todo patch db)
 
-    imgSetScan = newImageFromIconName("gtk-zoom-in", 3)
+    imgSetScan = newImageFromIconName("zoom-in", 3)
     imgSetUpdate = newImageFromIconName("view-sort-ascending", 3)
 
   labelOptions.setXalign(0.0)

@@ -15,7 +15,7 @@ proc scan(path: string, b: Button, asRoot = false) =
     btnMinimize = newButton("Hide")
     # Image variables
     imgStop = newImageFromIconName("exit", 3) # if not compelted else dialog-yes
-    imgMinimize = newImageFromIconName("gtk-go-down", 3)
+    imgMinimize = newImageFromIconName("go-down", 3)
     # TODO minimize button
 
   scanLabel.setXalign(0.0)
