@@ -1,6 +1,10 @@
-import gintro / gtk
+import gintro / [gtk, gobject]
 
-# proc uiScan(scanW)
+import random # TEST ONLY
+import strutils # Test only
+import ../ clamcontrol / controller
+import os
+
 
 proc scan(path: string, b: Button, asRoot = false) =
   let
@@ -12,7 +16,7 @@ proc scan(path: string, b: Button, asRoot = false) =
     scanProgress = newProgressBar()
     areaScan = scanDialog.getContentArea()
     btnStop = newButton("Stop")
-    btnMinimize = newButton("Hide")
+    btnHide = newButton("Hide")
     # Image variables
     imgStop = newImageFromIconName("exit", 3) # if not compelted else dialog-yes
     imgMinimize = newImageFromIconName("go-down", 3)
@@ -22,10 +26,14 @@ proc scan(path: string, b: Button, asRoot = false) =
 
   # Set image for buttons
   btnStop.setImage(imgStop)
-  btnMinimize.setImage(imgMinimize)
+  btnHide.setImage(imgMinimize)
+  btnHide.connect("clicked", controller.actionHide, scanDialog)
 
-  boxButtons.packStart(btnMinimize, false, true, 3)
+  boxButtons.packStart(btnHide, false, true, 3)
   boxButtons.packStart(btnStop, false, true, 3)
+
+  let testLabel = newLabel("Testing value is " & intToStr(rand(100)))
+  areaScan.packStart(testLabel, false, true, 3)
 
   areaScan.packStart(scanLabel, false, true, 3)
   areaScan.packStart(scanProgress, false, true, 9)

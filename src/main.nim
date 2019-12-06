@@ -1,5 +1,5 @@
 import gintro / [gtk, gobject]
-import clam / [scan, settings]
+import clamgui / [scan, settings]
 
 
 proc sectionScan(boxMain: Box) =
