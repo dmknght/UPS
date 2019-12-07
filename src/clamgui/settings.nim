@@ -24,7 +24,7 @@ proc actionSetProxy(b: CheckButton, txtValues: tuple)=
 proc stnScan*(b: Button) =
   let
     setScanDialog = newDialog()
-    boxOptions = newBox(Orientation.vertical, 3)
+    boxSettings = newBox(Orientation.vertical, 3)
     boxButtons = newBox(Orientation.horizontal, 3)
     areaSetting = setScanDialog.getContentArea()
     btnDoPUA = newCheckButtonWithLabel("Scan for PUAs")
@@ -38,12 +38,12 @@ proc stnScan*(b: Button) =
     imgSave = newImageFromIconName("dialog-ok", 3)
     imgCancel = newImageFromIconName("edit-clear", 3)
 
-  boxOptions.packStart(btnDoRemoveInfected, false, true, 3)
-  boxOptions.packStart(btnDoByteCode, false, true, 3)
-  boxOptions.packStart(btnDoPUA, false, true, 3)
-  boxOptions.packStart(btnDoMailFile, false, true, 3)
-  boxOptions.packStart(btnHeuristicAlert, false, true, 3)
-  boxOptions.packStart(btnDoAlertEncrypted, false, true, 3)
+  boxSettings.packStart(btnDoRemoveInfected, false, true, 3)
+  boxSettings.packStart(btnDoByteCode, false, true, 3)
+  boxSettings.packStart(btnDoPUA, false, true, 3)
+  boxSettings.packStart(btnDoMailFile, false, true, 3)
+  boxSettings.packStart(btnHeuristicAlert, false, true, 3)
+  boxSettings.packStart(btnDoAlertEncrypted, false, true, 3)
 
   btnSave.setImage(imgSave)
   btnCancel.setImage(imgCancel)
@@ -53,7 +53,7 @@ proc stnScan*(b: Button) =
   boxButtons.packStart(btnSave, false, true, 3)
   boxButtons.packStart(btnCancel, false, true, 3)
 
-  areaSetting.packStart(boxOptions, false, true, 3)
+  areaSetting.packStart(boxSettings, false, true, 3)
   areaSetting.packStart(boxButtons, false, true, 3)
 
   setScanDialog.title = "Scan Settings"
@@ -65,7 +65,7 @@ proc stnUpdate*(b: Button) =
     updateDialog = newDialog()
     areaSetting = updateDialog.getContentArea()
 
-    boxOptions = newBox(Orientation.vertical, 3)
+    boxSettings = newBox(Orientation.vertical, 3)
     btnDoAutoUpdate = newCheckButtonWithLabel("Auto Update")
     btnDoProxy = newCheckButton()
     labelUpdate = newLabel("Auto update setting")
@@ -90,11 +90,11 @@ proc stnUpdate*(b: Button) =
   btnDoProxy.label = "Use Proxy"
   btnDoProxy.connect("toggled", actionSetProxy, (txtAddr, txtPort))
 
-  boxOptions.packStart(labelUpdate, false, true, 3)
-  boxOptions.packStart(btnDoAutoUpdate, false, true, 3)
-  boxOptions.packStart(labelProxy, false, true, 3)
-  boxOptions.packStart(btnDoProxy, false, true, 3)
-  areaSetting.packStart(boxOptions, false, true, 3)
+  boxSettings.packStart(labelUpdate, false, true, 3)
+  boxSettings.packStart(btnDoAutoUpdate, false, true, 3)
+  boxSettings.packStart(labelProxy, false, true, 3)
+  boxSettings.packStart(btnDoProxy, false, true, 3)
+  areaSetting.packStart(boxSettings, false, true, 3)
 
   labelAddr.setXalign(0.0)
   labelPort.setXalign(0.0)

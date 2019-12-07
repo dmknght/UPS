@@ -23,8 +23,11 @@ proc sectionScan(boxMain: Box) =
   boxMain.add(labelScan)
 
   btnQuickScan.setImage(imgQuickScan)
+  btnQuickScan.setTooltipText("Scan your home folder")
   btnFullScan.setImage(imgFullScan)
+  btnFullScan.setTooltipText("Scan the whole computer")
   btnCustomScan.setImage(imgCustomScan)
+  btnCustomScan.setTooltipText("Scan selected files / folders")
   boxScan.packStart(btnQuickScan, false, true, 3)
   boxScan.packStart(btnFullScan, false, true, 3)
   boxScan.packStart(btnCustomScan, false, true, 3)
@@ -43,6 +46,7 @@ proc sectionProtection(boxMain: Box) =
   labelProtection.setXalign(0.0)
   boxMain.add(labelProtection)
   btnUpdate.setImage(imgUpdate)
+  btnUpdate.setTooltipText("Update virus signatures")
   boxProtection.packStart(btnUpdate, false, true, 3)
   boxMain.add(boxProtection)
 
@@ -64,8 +68,8 @@ proc sectionHistory(boxMain: Box) =
 
 proc sectionSettings(boxMain: Box) = 
   let
-    labelOptions = newLabel("Options")
-    boxOptions = newBox(Orientation.horizontal, 5)
+    labelSettings = newLabel("Settings")
+    boxSettings = newBox(Orientation.horizontal, 5)
     btnSetScan = newButton("Scan Settings")
     btnSetSchedule = newButton("Schedule Scan")
     btnSetUpdate = newButton("Update Settings") # auto / manual update; proxy update (todo patch db)
@@ -73,18 +77,18 @@ proc sectionSettings(boxMain: Box) =
     imgSetScan = newImageFromIconName("zoom-in", 3)
     imgSetUpdate = newImageFromIconName("view-sort-ascending", 3)
 
-  labelOptions.setXalign(0.0)
+  labelSettings.setXalign(0.0)
 
   btnSetScan.connect("clicked", settings.stnScan)
   btnSetScan.setImage(imgSetScan)
   btnSetUpdate.connect("clicked", settings.stnUpdate)
   btnSetUpdate.setImage(imgSetUPdate)
 
-  boxMain.add(labelOptions)
-  boxOptions.packStart(btnSetScan, false, true, 3)
-  boxOptions.packStart(btnSetSchedule, false, true, 3)
-  boxOptions.packStart(btnSetUpdate, false, true, 3)
-  boxMain.packStart(boxOptions, false, true, 3)
+  boxMain.add(labelSettings)
+  boxSettings.packStart(btnSetScan, false, true, 3)
+  boxSettings.packStart(btnSetSchedule, false, true, 3)
+  boxSettings.packStart(btnSetUpdate, false, true, 3)
+  boxMain.packStart(boxSettings, false, true, 3)
 
 proc stop(w: Window) =
   mainQuit()
