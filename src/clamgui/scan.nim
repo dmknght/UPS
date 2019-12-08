@@ -1,15 +1,14 @@
 import gintro / [gtk, gobject]
 
-import random # TEST ONLY
 import strutils # Test only
 import ../ clamcontrol / controller
-import os
+import osproc
+import streams
 
 
 proc scan(path: string, b: Button, asRoot = false) =
   let
     scanDialog = newDialog()
-    scanLabel = newLabel("Scanning") # TODO status here: preparing / scanning / completed
     boxButtons = newBox(Orientation.horizontal, 3)
     # scanned = newLabel("File scanned: ")
     # Threats = newLabel("Threats: ")
@@ -22,18 +21,21 @@ proc scan(path: string, b: Button, asRoot = false) =
     imgMinimize = newImageFromIconName("go-down", 3)
     # TODO minimize button
 
+    # pid = p.processID()
+  var
+    scanLabel = newLabel("Preparing") # TODO status here: preparing / scanning / completed
+
   scanLabel.setXalign(0.0)
 
   # Set image for buttons
   btnStop.setImage(imgStop)
+  # btnStop.connect("clicked", controller.actionStop, p)
+  # TODO cancel or do something close windoww
   btnHide.setImage(imgMinimize)
   btnHide.connect("clicked", controller.actionHide, scanDialog)
 
   boxButtons.packStart(btnHide, false, true, 3)
   boxButtons.packStart(btnStop, false, true, 3)
-
-  let testLabel = newLabel("Testing value is " & intToStr(rand(100)))
-  areaScan.packStart(testLabel, false, true, 3)
 
   areaScan.packStart(scanLabel, false, true, 3)
   areaScan.packStart(scanProgress, false, true, 9)
@@ -41,11 +43,27 @@ proc scan(path: string, b: Button, asRoot = false) =
   
   scanDialog.title = "Scanning " & path # TODO Custom scan or something else; add completed to title
   scanDialog.setDefaultSize(400, 100)
+  
+  # while true:
+  let
+    p = startProcess(command = "/usr/bin/clamscan", args = ["--no-summary", "-v", path])
+    msg = outputStream(p)
+  var line = ""
+  while msg.readLine(line):
+    scanLabel.setLabel(line)
+  p.close()
+
+  btnStop.connect("clicked", controller.actionStop, p)
   scanDialog.showAll
+  
+  # let testValue = p.outputStream()
+  # var line: string
+  # while testValue.readLine(line):
+  #   scanLabel.label = line
 
 
 proc quickScan*(b: Button) =
-  let path = "$HOME"
+  let path = "/home/dmknght/Templates/"
   # TODO handle stop
   scan(path, b)
 

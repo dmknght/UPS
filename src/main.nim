@@ -1,5 +1,6 @@
 import gintro / [gtk, gobject]
 import clamgui / [scan, settings]
+# import firewall / firewall
 
 
 proc sectionScan(boxMain: Box) =
@@ -39,15 +40,23 @@ proc sectionProtection(boxMain: Box) =
     boxProtection = newBox(Orientation.horizontal, 5)
     btnUpdate = newButton("Update")
     imgUpdate = newImageFromIconName("document-save-as", 3)
+
+    btnFirewall = newButton("Firewall")
+    # imgFirewall = newImageFromIconName()
     # TODO netmon
     # TODO real time protection
     # TODO update settings?
 
   labelProtection.setXalign(0.0)
+
   boxMain.add(labelProtection)
   btnUpdate.setImage(imgUpdate)
   btnUpdate.setTooltipText("Update virus signatures")
+  btnFirewall.setTooltipText("Set connection policies")
+  # btnFirewall.connect("clicked", firewall.tableFirewall)
+
   boxProtection.packStart(btnUpdate, false, true, 3)
+  boxProtection.packStart(btnFirewall, false, true, 3)
   boxMain.add(boxProtection)
 
 proc sectionHistory(boxMain: Box) =
