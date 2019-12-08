@@ -20,16 +20,18 @@ proc scan(path: string, b: Button, asRoot = false) =
     imgStop = newImageFromIconName("exit", 3) # if not compelted else dialog-yes
     imgMinimize = newImageFromIconName("go-down", 3)
     # TODO minimize button
-
+    p = startProcess(command = "/usr/bin/clamscan", args = ["--no-summary", "-v", path])
+    # PROCESS RUN UNTIL IT STOP AND THE WINDOWS SHOW
     # pid = p.processID()
   var
     scanLabel = newLabel("Preparing") # TODO status here: preparing / scanning / completed
 
+  scanDialog.queueDraw()
   scanLabel.setXalign(0.0)
 
   # Set image for buttons
   btnStop.setImage(imgStop)
-  # btnStop.connect("clicked", controller.actionStop, p)
+  btnStop.connect("clicked", controller.actionStop, p)
   # TODO cancel or do something close windoww
   btnHide.setImage(imgMinimize)
   btnHide.connect("clicked", controller.actionHide, scanDialog)
@@ -44,16 +46,15 @@ proc scan(path: string, b: Button, asRoot = false) =
   scanDialog.title = "Scanning " & path # TODO Custom scan or something else; add completed to title
   scanDialog.setDefaultSize(400, 100)
   
-  # while true:
-  let
-    p = startProcess(command = "/usr/bin/clamscan", args = ["--no-summary", "-v", path])
-    msg = outputStream(p)
-  var line = ""
-  while msg.readLine(line):
-    scanLabel.setLabel(line)
+  # let
+  #   # p = startProcess(command = "/usr/bin/clamscan", args = ["--no-summary", "-v", path])
+  #   msg = outputStream(p)
+  # var line = ""
+  # while msg.readLine(line):
+  #   scanLabel.setLabel(line)
   p.close()
 
-  btnStop.connect("clicked", controller.actionStop, p)
+  # btnStop.connect("clicked", controller.actionStop, p)
   scanDialog.showAll
   
   # let testValue = p.outputStream()
