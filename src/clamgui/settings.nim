@@ -5,12 +5,12 @@ type
   clamSettings = object
     setProxy: bool
 
+# TODO default settings and restore default settings
+
 var userSettings = clamSettings(setProxy: false)
 
 proc actionSetProxy(b: CheckButton, txtValues: tuple)=
-  let
-    txtAddr: View = txtValues[0]
-    txtPort: View = txtValues[1]
+  let (txtAddr, txtPort) = txtValues
 
   if userSettings.setProxy == false:
     userSettings.setProxy = true
