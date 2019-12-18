@@ -56,9 +56,7 @@ proc scanController(path: string, b: Button, asRoot = false) =
     # command = ["/usr/bin/clamscan", "--no-summary", "-v", path]
   
   scanLabel.setXalign(0.0)
-  var procID: int
-  discard spawnAsync("", ["/usr/bin/clamscan", "--no-summary", "-v", path], [], {doNotReapChild}, nil, nil, procID)
- 
+  
   # Set image for buttons
   btnStop.setImage(imgStop)
   # btnStop.connect("clicked", controller.actionStop, p)
@@ -77,7 +75,14 @@ proc scanController(path: string, b: Button, asRoot = false) =
   scanDialog.title = "Scanning " & path # TODO Custom scan or something else; add completed to title
   scanDialog.setDefaultSize(400, 100)
   
-  discard timeoutAdd(1, initScan, scanDialog)
+  var
+    procID: int
+    stdInput: int
+    stdOutput: int
+    stdErr: int
+  discard spawnAsyncWithPipes("", ["/usr/bin/clamscan", "--no-summary", "-v", path], [], {doNotReapChild}, nil, nil, procID, stdInput, stdOutput, stdErr)
+  let outputChannel = unixNew(stdOutput)
+  # discard timeoutAdd(1, initScan, scanDialog)
 
   # let
   #   p = startProcess(command = "/usr/bin/clamscan", args = ["--no-summary", "-v", path])
