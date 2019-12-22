@@ -1,9 +1,9 @@
 import gintro / [gtk, gobject, glib]
 
-import strutils # Test only
+# import strutils # Test only
 import ../ clamcontrol / controller
-import osproc
-import streams
+# import osproc
+# import streams
 
 
 # proc scan(scanLabel: Label) =
@@ -31,9 +31,12 @@ import streams
 #   #       scanDialog.queueDraw()
 #   p.close()
 
-proc initScan(d: Dialog): bool =
-  queueDraw(d)
-  return SOURCE_CONTINUE
+# proc updateLabel(l: Label, t: string) =
+#   l.setLabel(t)
+
+# proc initScan(d: Dialog): bool =
+#   queueDraw(d)
+#   return SOURCE_CONTINUE
 
 proc scanController(path: string, b: Button, asRoot = false) =
   let
@@ -74,39 +77,31 @@ proc scanController(path: string, b: Button, asRoot = false) =
   
   scanDialog.title = "Scanning " & path # TODO Custom scan or something else; add completed to title
   scanDialog.setDefaultSize(400, 100)
+
+
+  proc updateLabel(src: ptr IOChannel00, cond: IOCondition, data: pointer): gboolean {.cdecl.} =
+    var mydata = cast[cstring](src)
+    echo mydata
   
   var
     procID: int
     stdInput: int
     stdOutput: int
     stdErr: int
-  discard spawnAsyncWithPipes("", ["/usr/bin/clamscan", "--no-summary", "-v", path], [], {doNotReapChild}, nil, nil, procID, stdInput, stdOutput, stdErr)
-  let outputChannel = unixNew(stdOutput)
-  # discard timeoutAdd(1, initScan, scanDialog)
+  
+  let scanResult = spawnAsyncWithPipes("/", ["/usr/bin/clamscan", "--no-summary", "-v", "--stdout", path], [], {doNotReapChild}, nil, nil, procID, stdInput, stdOutput, stdErr)
 
-  # let
-  #   p = startProcess(command = "/usr/bin/clamscan", args = ["--no-summary", "-v", path])
-  #   msg = outputStream(p)
-  # var line = ""
-  # while msg.readLine(line):
-  #   scanLabel.setLabel(line)
-  # p.close()
-  
+  let scanChannel = unixNew(stdOutput)
+  let scanStream = ioAddWatch(scanChannel, 1, IOCondition.in, updateLabel, nil, nil)
+
+  if not scanResult:
+    scanLabel.setLabel("Scan failed")
   scanDialog.showAll
-  # btnStop.connect("clicked", controller.actionStop, p)
   
-  # discard timeoutAdd(1, scan, scanLabel)
-  # connect(scanDialog, "clicked", scan, scanLabel)
-  # scanDialog.showAll
-  
-  # let testValue = p.outputStream()
-  # var line: string
-  # while testValue.readLine(line):
-  #   scanLabel.label = line
 
 proc quickScan*(b: Button) =
   let path = "/home/dmknght/Templates/"
-  b.setLabel("Scanning Home") # TODO restore label
+  # b.setLabel("Scanning Home") # TODO restore label
   # TODO handle stop
   scanController(path, b)
 
