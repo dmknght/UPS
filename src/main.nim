@@ -8,28 +8,28 @@ proc sectionScan(boxMain: Box) =
     boxScan = newBox(Orientation.horizontal, 5)
     labelScan = newLabel("Scan")
     # buttons
-    btnQuickScan = newButton("Quick Scan")
+    btnHomeScan = newButton("Home Scan")
     btnFullScan = newButton("Full Scan")
     btnCustomScan = newButton("Custom Scan")
     # icons
-    # imgQuickScan = newImageFromIconName("gtk-find-and-replace", 3)
-    imgQuickScan = newImageFromIconName("go-home", 3)
+    # imgHomeScan = newImageFromIconName("gtk-find-and-replace", 3)
+    imgHomeScan = newImageFromIconName("go-home", 3)
     imgFullScan = newImageFromIconName("system-search", 3)
     imgCustomScan = newImageFromIconName("folder-new", 3)
     # TODO online analysis + repu scan
 
   boxScan.setBorderWidth(3)
-  btnQuickScan.connect("clicked", scan.quickScan)
+  btnHomeScan.connect("clicked", scan.homeScan)
   labelScan.setXalign(0.0)
   boxMain.add(labelScan)
 
-  btnQuickScan.setImage(imgQuickScan)
-  btnQuickScan.setTooltipText("Scan your home folder")
+  btnHomeScan.setImage(imgHomeScan)
+  btnHomeScan.setTooltipText("Scan your home folder")
   btnFullScan.setImage(imgFullScan)
   btnFullScan.setTooltipText("Scan the whole computer")
   btnCustomScan.setImage(imgCustomScan)
   btnCustomScan.setTooltipText("Scan selected files / folders")
-  boxScan.packStart(btnQuickScan, false, true, 3)
+  boxScan.packStart(btnHomeScan, false, true, 3)
   boxScan.packStart(btnFullScan, false, true, 3)
   boxScan.packStart(btnCustomScan, false, true, 3)
   boxMain.packStart(boxScan, false, true, 3)
@@ -41,7 +41,7 @@ proc sectionProtection(boxMain: Box) =
     btnUpdate = newButton("Update")
     imgUpdate = newImageFromIconName("document-save-as", 3)
 
-    btnFirewall = newButton("Firewall")
+    # btnFirewall = newButton("Firewall")
     # imgFirewall = newImageFromIconName()
     # TODO netmon
     # TODO real time protection
@@ -52,11 +52,11 @@ proc sectionProtection(boxMain: Box) =
   boxMain.add(labelProtection)
   btnUpdate.setImage(imgUpdate)
   btnUpdate.setTooltipText("Update virus signatures")
-  btnFirewall.setTooltipText("Set connection policies")
+  # btnFirewall.setTooltipText("Set connection policies")
   # btnFirewall.connect("clicked", firewall.tableFirewall)
 
   boxProtection.packStart(btnUpdate, false, true, 3)
-  boxProtection.packStart(btnFirewall, false, true, 3)
+  # boxProtection.packStart(btnFirewall, false, true, 3)
   boxMain.add(boxProtection)
 
 proc sectionHistory(boxMain: Box) =
