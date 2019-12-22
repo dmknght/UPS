@@ -1,7 +1,23 @@
-import gintro / [gtk, gobject, glib]
+import gintro/[gtk, glib, gobject, gio]
+import osproc
+import streams
 
 import ../ clamcontrol / controller
 
+var globalChan: Channel[string]
+var watcherThread: system.Thread[void]
+
+proc watchProc() = 
+  let path = "/home/dmknght/"
+  let scanner = startProcess("/usr/bin/clamscan", args = @["--no-summary", "-v", path]) 
+  while scanner.peekExitCode == -1:
+    globalChan.send(scanner.outputStream.readLine() & "\n")
+
+proc recvCb(scanLabel: Label): bool = 
+  let data = globalChan.tryRecv()
+  if data[0]:
+    scanLabel.setText(data[1])
+  return SOURCE_CONTINUE
 
 proc scanController(path: string, b: Button, asRoot = false) =
   let
@@ -38,32 +54,10 @@ proc scanController(path: string, b: Button, asRoot = false) =
   scanDialog.setDefaultSize(400, 100)
 
 
-  # proc updateLabel(src: ptr IOChannel00, cond: IOCondition, data: pointer): gboolean {.cdecl.} =
-  #   var channel = cast[IOChannel](src)
-  #   var mytext = newString(1024)
-  #   var length: uint64 = 16
-  #   var tmp: uint64 = 16
-  #   discard channel.readLine(mytext, length, tmp)
-  #   echo mytext
-  
-  var
-    procID: int
-    stdInput: int
-    stdOutput: int
-    stdErr: int
-  
-  let scanResult = spawnAsyncWithPipes("/", ["/usr/bin/clamscan", "--no-summary", "-v", path], [], {doNotReapChild}, nil, nil, procID, stdInput, stdOutput, stdErr)
 
-  let scanChannel = unixNew(stdOutput)
-  var mytext: string
-  var length: uint64 = 64
-  var tmp: uint64 = 64
-  discard scanChannel.readLine(mytext, length, tmp)
-  echo mytext
-  # discard ioAddWatch(scanChannel, 1, IOCondition.in, updateLabel, nil, nil)
-
-  if not scanResult:
-    scanLabel.setLabel("Scan failed")
+  discard timeoutAdd(100, recvCb, scanLabel)
+  globalChan.open()
+  createThread(watcherThread, watchProc)
   scanDialog.showAll
   
 
