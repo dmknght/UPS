@@ -38,11 +38,13 @@ proc scanController(path: string, b: Button, asRoot = false) =
   scanDialog.setDefaultSize(400, 100)
 
 
-  proc updateLabel(src: ptr IOChannel00, cond: IOCondition, data: pointer): gboolean {.cdecl.} =
-    # var mydata = cast[cstring](src)
-    # echo "scannin"
-    # echo mydata
-    echo cast[cstring](src)
+  # proc updateLabel(src: ptr IOChannel00, cond: IOCondition, data: pointer): gboolean {.cdecl.} =
+  #   var channel = cast[IOChannel](src)
+  #   var mytext = newString(1024)
+  #   var length: uint64 = 16
+  #   var tmp: uint64 = 16
+  #   discard channel.readLine(mytext, length, tmp)
+  #   echo mytext
   
   var
     procID: int
@@ -53,7 +55,12 @@ proc scanController(path: string, b: Button, asRoot = false) =
   let scanResult = spawnAsyncWithPipes("/", ["/usr/bin/clamscan", "--no-summary", "-v", path], [], {doNotReapChild}, nil, nil, procID, stdInput, stdOutput, stdErr)
 
   let scanChannel = unixNew(stdOutput)
-  discard ioAddWatch(scanChannel, 1, IOCondition.in, updateLabel, nil, nil)
+  var mytext: string
+  var length: uint64 = 64
+  var tmp: uint64 = 64
+  discard scanChannel.readLine(mytext, length, tmp)
+  echo mytext
+  # discard ioAddWatch(scanChannel, 1, IOCondition.in, updateLabel, nil, nil)
 
   if not scanResult:
     scanLabel.setLabel("Scan failed")
