@@ -5,7 +5,7 @@ var watcherThread: system.Thread[void]
 
 proc watchProc() = 
   let a = startProcess("/usr/bin/ping", args = @["google.com"]) 
-  while true:
+  while a.peekExitCode != -1:
     globalChan.send(a.outputStream.readLine() & "\n")
 
 proc recvCb(w: Widget): bool = 
