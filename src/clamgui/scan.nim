@@ -9,7 +9,9 @@ var
   globalChan: Channel[string]
   watcherThread: system.Thread[tuple[path: string]]
 
-proc watchProc(interval: tuple[path: string]) {.thread.}= 
+# TODO handle multiple threads
+
+proc watchProc(interval: tuple[path: string]) {.thread.} =
   let scanner = startProcess("/usr/bin/clamscan", args = @["--no-summary", "-v", interval.path])
   var
     numScan = 0
@@ -72,11 +74,11 @@ proc createScan(path: string, title: string, b: Button, asRoot = false) =
   scanDialog.setDefaultSize(400, 100)
 
   discard timeoutAdd(70, recvCb, scanLabel)
+  # TODO handle multiple channels
   globalChan.open()
   createThread(watcherThread, watchProc, (path,))
   scanDialog.showAll
   
-# TODO check for db before scan
 proc homeScan*(b: Button) =
   # TODO get environment path
   let
