@@ -69,13 +69,13 @@ proc createScan(path: string, title: string, b: Button, asRoot = false) =
 proc homeScan*(b: Button) =
   # TODO get environment path
   let
-    path = "/home/dmknght/Templates/"
-    title = "Home Scan"
+    path = glib.getHomeDir()
+    title = "Scanning " & path
   # TODO handle stop
   createScan(path, title, b)
 
 proc fullScan*(b: Button) =
   let
     path = "/"
-    title = "System Scan"
+    title = "Scanning /"
   createScan(path, title, b, asRoot = true)
