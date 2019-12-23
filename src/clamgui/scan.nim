@@ -1,4 +1,4 @@
-import gintro/[gtk, glib, gobject, gio]
+import gintro/[gtk, glib, gobject]
 import osproc
 import streams
 
@@ -8,10 +8,19 @@ var globalChan: Channel[string]
 var watcherThread: system.Thread[void]
 
 proc watchProc() = 
-  let path = "/home/dmknght/"
-  let scanner = startProcess("/usr/bin/clamscan", args = @["--no-summary", "-v", path]) 
+  let path = "/home/dmknght/" # TODO edit here
+  let scanner = startProcess("/usr/bin/clamscan", args = @["--no-summary", "-v", path])
+  var
+    numClean = 0
+    numThreat = 0
+    
   while scanner.peekExitCode == -1:
-    globalChan.send(scanner.outputStream.readLine() & "\n")
+    try:
+      # TODO get status file
+      globalChan.send(scanner.outputStream.readLine())
+    except system.IOError:
+      globalChan.send("Scan completed")
+      # return
 
 proc recvCb(scanLabel: Label): bool = 
   let data = globalChan.tryRecv()
@@ -55,12 +64,12 @@ proc scanController(path: string, b: Button, asRoot = false) =
 
 
 
-  discard timeoutAdd(100, recvCb, scanLabel)
+  discard timeoutAdd(70, recvCb, scanLabel)
   globalChan.open()
   createThread(watcherThread, watchProc)
   scanDialog.showAll
   
-
+# TODO check for db before scan
 proc homeScan*(b: Button) =
   let path = "/home/dmknght/Templates/"
   # TODO handle stop
