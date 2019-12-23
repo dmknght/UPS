@@ -19,19 +19,30 @@ proc sectionScan(boxMain: Box) =
     # TODO online analysis + repu scan
 
   boxScan.setBorderWidth(3)
-  btnHomeScan.connect("clicked", scan.homeScan)
   labelScan.setXalign(0.0)
   boxMain.add(labelScan)
 
+  # Setup button Home Scan
   btnHomeScan.setImage(imgHomeScan)
   btnHomeScan.setTooltipText("Scan your home folder")
+  btnHomeScan.connect("clicked", scan.homeScan)
+
+  # Setup button Full scan
   btnFullScan.setImage(imgFullScan)
   btnFullScan.setTooltipText("Scan the whole computer")
+  btnFullScan.connect("clicked", scan.fullScan)
+
+  # Setup button Custom Scan
   btnCustomScan.setImage(imgCustomScan)
   btnCustomScan.setTooltipText("Scan selected files / folders")
+  # TODO display path selection
+
+  # Add buttons to the scan box
   boxScan.packStart(btnHomeScan, false, true, 3)
   boxScan.packStart(btnFullScan, false, true, 3)
   boxScan.packStart(btnCustomScan, false, true, 3)
+
+  # Add scan box to main box
   boxMain.packStart(boxScan, false, true, 3)
 
 proc sectionProtection(boxMain: Box) =
