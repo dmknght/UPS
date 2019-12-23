@@ -9,7 +9,6 @@ var
   watcherThread: system.Thread[tuple[path: string]]
 
 proc watchProc(interval: tuple[path: string]) {.thread.}= 
-  # let path = "/home/dmknght/" # TODO edit here
   let scanner = startProcess("/usr/bin/clamscan", args = @["--no-summary", "-v", interval.path])
   var
     numClean = 0
@@ -17,11 +16,9 @@ proc watchProc(interval: tuple[path: string]) {.thread.}=
     
   while scanner.peekExitCode == -1:
     try:
-      # TODO get status file
       globalChan.send(scanner.outputStream.readLine())
     except system.IOError:
       globalChan.send("Scan completed")
-      # return
 
 proc recvCb(scanLabel: Label): bool = 
   let data = globalChan.tryRecv()
@@ -29,7 +26,7 @@ proc recvCb(scanLabel: Label): bool =
     scanLabel.setText(data[1])
   return SOURCE_CONTINUE
 
-proc scanController(path: string, b: Button, asRoot = false) =
+proc createScan(path: string, title: string, b: Button, asRoot = false) =
   let
     scanDialog = newDialog()
     scanLabel = newLabel("Preparing")
@@ -60,7 +57,7 @@ proc scanController(path: string, b: Button, asRoot = false) =
   areaScan.packStart(scanProgress, false, true, 9)
   areaScan.packStart(boxButtons, false, true, 0)
   
-  scanDialog.title = "Scanning " & path # TODO Custom scan or something else; add completed to title
+  scanDialog.title = title
   scanDialog.setDefaultSize(400, 100)
 
   discard timeoutAdd(70, recvCb, scanLabel)
@@ -70,10 +67,15 @@ proc scanController(path: string, b: Button, asRoot = false) =
   
 # TODO check for db before scan
 proc homeScan*(b: Button) =
-  let path = "/home/dmknght/Templates/"
+  # TODO get environment path
+  let
+    path = "/home/dmknght/Templates/"
+    title = "Home Scan"
   # TODO handle stop
-  scanController(path, b)
+  createScan(path, title, b)
 
 proc fullScan*(b: Button) =
-  let path = "/"
-  scanController(path, b, asRoot = true)
+  let
+    path = "/"
+    title = "System Scan"
+  createScan(path, title, b, asRoot = true)
