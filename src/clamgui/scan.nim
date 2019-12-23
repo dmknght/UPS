@@ -4,12 +4,13 @@ import streams
 
 import ../ clamcontrol / controller
 
-var globalChan: Channel[string]
-var watcherThread: system.Thread[void]
+var
+  globalChan: Channel[string]
+  watcherThread: system.Thread[tuple[path: string]]
 
-proc watchProc() = 
-  let path = "/home/dmknght/" # TODO edit here
-  let scanner = startProcess("/usr/bin/clamscan", args = @["--no-summary", "-v", path])
+proc watchProc(interval: tuple[path: string]) {.thread.}= 
+  # let path = "/home/dmknght/" # TODO edit here
+  let scanner = startProcess("/usr/bin/clamscan", args = @["--no-summary", "-v", interval.path])
   var
     numClean = 0
     numThreat = 0
@@ -62,11 +63,9 @@ proc scanController(path: string, b: Button, asRoot = false) =
   scanDialog.title = "Scanning " & path # TODO Custom scan or something else; add completed to title
   scanDialog.setDefaultSize(400, 100)
 
-
-
   discard timeoutAdd(70, recvCb, scanLabel)
   globalChan.open()
-  createThread(watcherThread, watchProc)
+  createThread(watcherThread, watchProc, (path,))
   scanDialog.showAll
   
 # TODO check for db before scan
