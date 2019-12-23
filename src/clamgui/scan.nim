@@ -88,7 +88,7 @@ proc homeScan*(b: Button) =
 proc fullScan*(b: Button) =
   let
     path = "/"
-    title = "Scanning /"
+    title = "Scanning System"
   createScan(path, title, b, asRoot = true)
 
 proc customScan*(b: Button) =
