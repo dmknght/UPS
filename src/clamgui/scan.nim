@@ -1,6 +1,7 @@
 import gintro/[gtk, glib, gobject]
 import osproc
 import streams
+import strutils
 
 import ../ clamcontrol / controller
 
@@ -11,12 +12,21 @@ var
 proc watchProc(interval: tuple[path: string]) {.thread.}= 
   let scanner = startProcess("/usr/bin/clamscan", args = @["--no-summary", "-v", interval.path])
   var
+    numScan = 0
     numClean = 0
-    numThreat = 0
+    numInfect = 0
     
   while scanner.peekExitCode == -1:
     try:
-      globalChan.send(scanner.outputStream.readLine())
+      let scanResult = scanner.outputStream.readLine()
+      if scanResult.split(" ")[0] == "Scanning":
+        numScan += 1
+        globalChan.send(scanResult)
+      elif scanResult.split(" ")[^1] == "OK":
+        numClean += 1 
+      elif scanResult.split(" ")[^1] == "FOUND":
+        numInfect += 1 
+        # TODO malware type = scanResult.split(" ")[^2]
     except system.IOError:
       globalChan.send("Scan completed")
 
@@ -79,3 +89,10 @@ proc fullScan*(b: Button) =
     path = "/"
     title = "Scanning /"
   createScan(path, title, b, asRoot = true)
+
+proc customScan*(b: Button) =
+  let
+    path = "/home"
+    # TODO edit path to list of files / folders
+    title = "Custom Scan"
+  createScan(path, title, b, asRoot = false)
