@@ -28,7 +28,8 @@ proc watchProc(interval: tuple[path: string]) {.thread.}=
         numInfect += 1 
         # TODO malware type = scanResult.split(" ")[^2]
     except system.IOError:
-      globalChan.send("Scan completed")
+      let msg = "Scan completed!\nScanned: " & intToStr(numScan) & " Clean: " & intToStr(numClean) & " Found: " & intToStr(numInfect)
+      globalChan.send(msg)
 
 proc recvCb(scanLabel: Label): bool = 
   let data = globalChan.tryRecv()
