@@ -122,11 +122,11 @@ proc setUpdate(b: Box) =
 
   boxSettings.packStart(btnDoAutoUpdate, false, true, 3)
   boxSettings.packStart(btnDoProxy, false, true, 3)
-  boxSettings.packStart(labelProxy, false, true, 3)
 
-  addrBox.packStart(labelAddr, false, true, 0)
+  addrBox.packStart(labelProxy, false, true, 3)
+  addrBox.packStart(labelAddr, false, true, 3)
   addrBox.packStart(txtAddr, false, true, 6)
-  addrBox.packStart(labelPort, false, true, 0)
+  addrBox.packStart(labelPort, false, true, 3)
   addrBox.packStart(txtPort, false, true, 6)
 
   b.packStart(boxSettings, false, true, 3)
@@ -146,6 +146,7 @@ proc setScan(b: Box) =
     btnDoAlertEncrypted = newCheckButton()
     btnHeuristicAlert = newCheckButton()
 
+  # Init all buttons
   btnDoPUA.initSetButtonCheck("Scan", "Scan PUA")
   btnDoByteCode.initSetButtonCheck("Scan", "Scan Byte Code")
   btnDoRemoveInfected.initSetButtonCheck("Scan", "Auto Remove Infected")
@@ -153,6 +154,7 @@ proc setScan(b: Box) =
   btnDoAlertEncrypted.initSetButtonCheck("Scan", "Alert Encrypted Files")
   btnHeuristicAlert.initSetButtonCheck("Scan", "Alert Heuristic")
 
+  # Add buttons to scan setting tab
   boxSettings.packStart(btnDoRemoveInfected, false, true, 3)
   boxSettings.packStart(btnDoByteCode, false, true, 3)
   boxSettings.packStart(btnDoPUA, false, true, 3)
@@ -164,10 +166,13 @@ proc setScan(b: Box) =
 
 
 proc popSettings*(b: Button) =
+  #[
+    Render setting dialog
+  ]#
   let
-    setDialog = newDialog()
-    areaSet = setDialog.getContentArea()
-    setController = newNotebook()
+    setDialog = newDialog() # Create new dialog
+    areaSet = setDialog.getContentArea() # Create object to control dialog
+    setController = newNotebook() # Create setting menu with tabs
 
     boxSetScan = newBox(Orientation.vertical, 3)
     boxSetUpdate = newBox(Orientation.vertical, 3)
