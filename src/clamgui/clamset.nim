@@ -60,16 +60,21 @@ proc actionSave(b: Button, d: Dialog) =
   d.destroy()
 
 
-proc actionClickSetting(b: CheckButton, settings: tuple[section, key: string]) =
+proc updatePortSetting(b: SpinButton, setting: tuple[section, key: string]) =
+  let buttonValue = b.getValueAsInt
+  clamSettings.setSectionKey(setting.section, setting.key, intToStr(buttonValue))
+
+
+proc actionClickSetting(b: CheckButton, setting: tuple[section, key: string]) =
   #[
     When a CheckButton is clicked (enable / disable an option), \
     the value of the option will be changed
   ]#
 
   if b.getActive():
-    clamSettings.setSectionKey(settings.section, settings.key, "1")
+    clamSettings.setSectionKey(setting.section, setting.key, "1")
   else:
-    clamSettings.setSectionKey(settings.section, settings.key, "0")
+    clamSettings.setSectionKey(setting.section, setting.key, "0")
 
 
 proc initSetButtonCheck(b: CheckButton, section: string, label:string) =
@@ -139,6 +144,10 @@ proc setUpdate(b: Box) =
 
   boxSettings.packStart(btnDoAutoUpdate, false, true, 3)
   boxSettings.packStart(btnDoProxy, false, true, 3)
+
+  # TODO init proxy addr and port value
+
+  setProxyPort.connect("value-changed", updatePortSetting, ("Update", "Port"))
 
   addrBox.packStart(labelProxy, false, true, 3)
   addrBox.packStart(labelAddr, false, true, 3)
