@@ -146,6 +146,9 @@ proc setUpdate(b: Box) =
   boxSettings.packStart(btnDoProxy, false, true, 3)
 
   # TODO init proxy addr and port value
+  let portFromSetting = clamSettings.getSectionValue("Update", "Port")
+  if portFromSetting != "":
+    setProxyPort.setValue(parseInt(portFromSetting).cdouble)
 
   setProxyPort.connect("value-changed", updatePortSetting, ("Update", "Port"))
 
