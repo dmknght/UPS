@@ -115,7 +115,6 @@ proc popSettings*(b: Button) =
   boxButtons.packStart(btnCancel, false, true, 3)
 
   setDialog.setTitle("ClamAV Settings")
-  setDialog.setDefaultSize(400, 100)
 
   setScan(boxSetScan)
   discard setController.appendPage(boxSetScan)
