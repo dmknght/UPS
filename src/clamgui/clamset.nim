@@ -31,6 +31,15 @@ proc createDefaultSettings() =
   defSettings.writeConfig(configFile)
 
 
+proc actionSave(b: Button, d: Dialog) =
+  #[
+    Save the settings to the file and close dialog
+  ]#
+
+  clamSettings.writeConfig(configFile)
+  d.destroy()
+
+
 proc loadsettings*() =
   #[
     Check if setting folder is created
@@ -63,20 +72,11 @@ proc actionClickSetting(b: CheckButton, settings: tuple[section, key: string]) =
     clamSettings.setSectionKey(settings.section, settings.key, "0")
 
 
-proc actionSave(b: Button, d: Dialog) =
-  #[
-    Save the settings to the file and close dialog
-  ]#
-
-  clamSettings.writeConfig(configFile)
-  d.destroy()
-
 
 proc initSetButtonCheck(b: CheckButton, section: string, label:string) =
   #[
     Set label for the button and generate value for settings automatically
   ]#
-  
   b.setLabel(label)
   let key = label.replace(" ", "")
   if clamSettings.getSectionValue(section, key) == "1":
