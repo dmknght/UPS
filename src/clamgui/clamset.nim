@@ -84,20 +84,20 @@ proc initSetButtonCheck(b: CheckButton, section: string, label:string) =
   b.connect("clicked", actionClickSetting, (section, key))
 
 
-proc actionInitProxyAddr(b: CheckButton, setProxy: tuple[pAddr, pPort: View]) =
+proc actionInitProxyAddr(b: CheckButton, setProxy: tuple[pAddr: View, pPort: SpinButton]) =
   #[
     Focus, unfocus field of address and port
   ]#
 
   if b.getActive():
     setProxy.pAddr.can_focus = true
-    setProxy.pPort.can_focus = true
+    setProxy.pPort.setSensitive(true)
   else:
     setProxy.pAddr.can_focus = false
-    setProxy.pPort.can_focus = false
+    setProxy.pPort.setSensitive(false)
 
 
-proc actionSetProxy(b: CheckButton, args: tuple[header, key: string, pAddr, pPort: View]) =
+proc actionSetProxy(b: CheckButton, args: tuple[header, key: string, pAddr: View, pPort: SpinButton]) =
   #[
     Change value of set proxy settings
     And focus / unfocus view fields
@@ -126,7 +126,7 @@ proc setUpdate(b: Box) =
     labelAddr = newLabel("Address")
     labelPort = newLabel("Port")
     txtAddr = newView()
-    txtPort = newView()
+    txtPort = newSpinButtonWithRange(1, 65535, 1)
 
   labelProxy.setXalign(0.0)
   labelAddr.setXalign(0.0)
