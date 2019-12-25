@@ -66,8 +66,8 @@ proc updatePortSetting(b: SpinButton, setting: tuple[section, key: string]) =
   clamSettings.setSectionKey(setting.section, setting.key, intToStr(buttonValue))
 
 
-proc updateAddrSetting(e: Entry, setting: tuple[section, key: string]) =
-  clamSettings.setSectionKey(setting.section, setting.key, e.getText())
+# proc updateAddrSetting(e: EntryBuffer, setting: tuple[section, key: string]) =
+#   clamSettings.setSectionKey(setting.section, setting.key, e.getText())
 
 
 proc actionClickSetting(b: CheckButton, setting: tuple[section, key: string]) =
@@ -163,7 +163,7 @@ proc setUpdate(b: Box) =
   if addrFromSetting != "":
     valueProxyAddr.setText(addrFromSetting, len(addrFromSetting))
 
-  # setProxyAddr.connect("inserted-text", updateAddrSetting, ("Update", "Address"))
+  # valueProxyAddr.connect("inserted-text", updateAddrSetting, ("Update", "Address"))
   setProxyPort.connect("value-changed", updatePortSetting, ("Update", "Port"))
 
   addrBox.packStart(labelProxy, false, true, 3)
