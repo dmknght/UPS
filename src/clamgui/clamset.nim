@@ -138,7 +138,7 @@ proc setUpdate(b: Box) =
 
   btnDoAutoUpdate.initSetButtonCheck("Update", "Auto Update")
   btnDoProxy.initSetButtonCheck("Update", "Use Proxy")
-  btnDoProxy.connect("toggled", actionSetProxy, ("Update", "Use Proxy", setProxyAddr, setProxyPort))
+  btnDoProxy.connect("toggled", actionSetProxy, ("Update", "UseProxy", setProxyAddr, setProxyPort))
   
   actionInitProxyAddr(btnDoProxy, (setProxyAddr, setProxyPort))
 
