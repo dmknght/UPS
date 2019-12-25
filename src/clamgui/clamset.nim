@@ -125,8 +125,8 @@ proc setUpdate(b: Box) =
     addrBox = newBox(Orientation.vertical, 0)
     labelAddr = newLabel("Address")
     labelPort = newLabel("Port")
-    txtAddr = newView()
-    txtPort = newSpinButtonWithRange(1, 65535, 1)
+    setProxyAddr = newView()
+    setProxyPort = newSpinButtonWithRange(1, 65535, 1)
 
   labelProxy.setXalign(0.0)
   labelAddr.setXalign(0.0)
@@ -134,18 +134,18 @@ proc setUpdate(b: Box) =
 
   btnDoAutoUpdate.initSetButtonCheck("Update", "Auto Update")
   btnDoProxy.initSetButtonCheck("Update", "Use Proxy")
-  btnDoProxy.connect("toggled", actionSetProxy, ("Update", "Use Proxy", txtAddr, txtPort))
+  btnDoProxy.connect("toggled", actionSetProxy, ("Update", "Use Proxy", setProxyAddr, setProxyPort))
   
-  actionInitProxyAddr(btnDoProxy, (txtAddr, txtPort))
+  actionInitProxyAddr(btnDoProxy, (setProxyAddr, setProxyPort))
 
   boxSettings.packStart(btnDoAutoUpdate, false, true, 3)
   boxSettings.packStart(btnDoProxy, false, true, 3)
 
   addrBox.packStart(labelProxy, false, true, 3)
   addrBox.packStart(labelAddr, false, true, 3)
-  addrBox.packStart(txtAddr, false, true, 6)
+  addrBox.packStart(setProxyAddr, false, true, 6)
   addrBox.packStart(labelPort, false, true, 3)
-  addrBox.packStart(txtPort, false, true, 6)
+  addrBox.packStart(setProxyPort, false, true, 6)
 
   b.packStart(boxSettings, false, true, 3)
   b.packStart(addrBox, false, true, 3)
