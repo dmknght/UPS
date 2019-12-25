@@ -1,4 +1,4 @@
-import gintro / [gtk, gobject, gtksource]
+import gintro / [gtk, gobject]
 import utils
 import parsecfg
 import os
@@ -56,6 +56,7 @@ proc actionSave(b: Button, d: Dialog) =
     Save the settings to the file and close dialog
   ]#
 
+  # TODO check valid address
   clamSettings.writeConfig(configFile)
   d.destroy()
 
@@ -63,6 +64,11 @@ proc actionSave(b: Button, d: Dialog) =
 proc updatePortSetting(b: SpinButton, setting: tuple[section, key: string]) =
   let buttonValue = b.getValueAsInt
   clamSettings.setSectionKey(setting.section, setting.key, intToStr(buttonValue))
+
+
+# proc updateAddrSetting(b: TextBuffer, setting: tuple[section, key: string]) =
+#   let addrValue = b.getText(b.getStartIter, b.getEndIter)
+#   clamSettings.setSectionKey(setting.section, setting.key, addrValue)
 
 
 proc actionClickSetting(b: CheckButton, setting: tuple[section, key: string]) =
@@ -88,20 +94,20 @@ proc initSetButtonCheck(b: CheckButton, section: string, label:string) =
   b.connect("clicked", actionClickSetting, (section, key))
 
 
-proc actionInitProxyAddr(b: CheckButton, setProxy: tuple[pAddr: View, pPort: SpinButton]) =
+proc actionInitProxyAddr(b: CheckButton, setProxy: tuple[pAddr: TextView, pPort: SpinButton]) =
   #[
     Focus, unfocus field of address and port
   ]#
 
   if b.getActive():
-    setProxy.pAddr.can_focus = true
+    setProxy.pAddr.setSensitive(true)
     setProxy.pPort.setSensitive(true)
   else:
-    setProxy.pAddr.can_focus = false
+    setProxy.pAddr.setSensitive(false)
     setProxy.pPort.setSensitive(false)
 
 
-proc actionSetProxy(b: CheckButton, args: tuple[header, key: string, pAddr: View, pPort: SpinButton]) =
+proc actionSetProxy(b: CheckButton, args: tuple[header, key: string, pAddr: TextView, pPort: SpinButton]) =
   #[
     Change value of set proxy settings
     And focus / unfocus view fields
@@ -129,7 +135,8 @@ proc setUpdate(b: Box) =
     addrBox = newBox(Orientation.vertical, 0)
     labelAddr = newLabel("Address")
     labelPort = newLabel("Port")
-    setProxyAddr = newView()
+    setProxyAddr = newTextView()
+    valueProxyAddr = setProxyAddr.getBuffer()
     setProxyPort = newSpinButtonWithRange(1, 65535, 1)
 
   labelProxy.setXalign(0.0)
@@ -146,10 +153,18 @@ proc setUpdate(b: Box) =
   boxSettings.packStart(btnDoProxy, false, true, 3)
 
   # TODO init proxy addr and port value
-  let portFromSetting = clamSettings.getSectionValue("Update", "Port")
+  
+  let
+    addrFromSetting = clamSettings.getSectionValue("Update", "Address")
+    portFromSetting = clamSettings.getSectionValue("Update", "Port")
+  
   if portFromSetting != "":
     setProxyPort.setValue(parseInt(portFromSetting).cdouble)
 
+  if addrFromSetting != "":
+    valueProxyAddr.setText(addrFromSetting, len(addrFromSetting))
+
+  # valueProxyAddr.connect("value-changed", updateAddrSetting, ("Update", "Address"))
   setProxyPort.connect("value-changed", updatePortSetting, ("Update", "Port"))
 
   addrBox.packStart(labelProxy, false, true, 3)
