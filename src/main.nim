@@ -1,5 +1,5 @@
 import gintro / [gtk, gobject]
-import clamgui / [scan, settings]
+import clamgui / [scan, clamset]
 # import firewall / firewall
 
 
@@ -86,29 +86,46 @@ proc sectionHistory(boxMain: Box) =
   boxHistory.packSTart(btnQuaratine, false, true, 3)
   boxMain.add(boxHistory)
 
-proc sectionSettings(boxMain: Box) = 
+proc sectionSettings(boxMain: Box) =
   let
     labelSettings = newLabel("Settings")
     boxSettings = newBox(Orientation.horizontal, 5)
-    btnSetScan = newButton("Scan Settings")
-    btnSetSchedule = newButton("Schedule Scan")
-    btnSetUpdate = newButton("Update Settings") # auto / manual update; proxy update (todo patch db)
-
-    imgSetScan = newImageFromIconName("zoom-in", 3)
-    imgSetUpdate = newImageFromIconName("view-sort-ascending", 3)
-
+    btnClamSet = newButton("ClamAV Settings")
+    # TODO image for clam settings
+  
   labelSettings.setXalign(0.0)
 
-  btnSetScan.connect("clicked", settings.stnScan)
-  btnSetScan.setImage(imgSetScan)
-  btnSetUpdate.connect("clicked", settings.stnUpdate)
-  btnSetUpdate.setImage(imgSetUPdate)
+  btnClamSet.connect("clicked", clamset.popSettings)
+
+  boxSettings.packStart(btnClamSet, false, true, 3)
 
   boxMain.add(labelSettings)
-  boxSettings.packStart(btnSetScan, false, true, 3)
-  boxSettings.packStart(btnSetSchedule, false, true, 3)
-  boxSettings.packStart(btnSetUpdate, false, true, 3)
   boxMain.packStart(boxSettings, false, true, 3)
+
+
+# proc sectionSettings(boxMain: Box) = 
+#   let
+#     labelSettings = newLabel("Settings")
+#     boxSettings = newBox(Orientation.horizontal, 5)
+#     btnSetScan = newButton("Scan Settings")
+#     btnSetSchedule = newButton("Schedule Scan")
+#     btnSetUpdate = newButton("Update Settings") # auto / manual update; proxy update (todo patch db)
+
+#     imgSetScan = newImageFromIconName("zoom-in", 3)
+#     imgSetUpdate = newImageFromIconName("view-sort-ascending", 3)
+
+#   labelSettings.setXalign(0.0)
+
+#   btnSetScan.connect("clicked", settings.stnScan)
+#   btnSetScan.setImage(imgSetScan)
+#   btnSetUpdate.connect("clicked", settings.stnUpdate)
+#   btnSetUpdate.setImage(imgSetUPdate)
+
+#   boxMain.add(labelSettings)
+#   boxSettings.packStart(btnSetScan, false, true, 3)
+#   boxSettings.packStart(btnSetSchedule, false, true, 3)
+#   boxSettings.packStart(btnSetUpdate, false, true, 3)
+#   boxMain.packStart(boxSettings, false, true, 3)
 
 proc stop(w: Window) =
   mainQuit()
