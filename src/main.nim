@@ -103,30 +103,6 @@ proc sectionSettings(boxMain: Box) =
   boxMain.packStart(boxSettings, false, true, 3)
 
 
-# proc sectionSettings(boxMain: Box) = 
-#   let
-#     labelSettings = newLabel("Settings")
-#     boxSettings = newBox(Orientation.horizontal, 5)
-#     btnSetScan = newButton("Scan Settings")
-#     btnSetSchedule = newButton("Schedule Scan")
-#     btnSetUpdate = newButton("Update Settings") # auto / manual update; proxy update (todo patch db)
-
-#     imgSetScan = newImageFromIconName("zoom-in", 3)
-#     imgSetUpdate = newImageFromIconName("view-sort-ascending", 3)
-
-#   labelSettings.setXalign(0.0)
-
-#   btnSetScan.connect("clicked", settings.stnScan)
-#   btnSetScan.setImage(imgSetScan)
-#   btnSetUpdate.connect("clicked", settings.stnUpdate)
-#   btnSetUpdate.setImage(imgSetUPdate)
-
-#   boxMain.add(labelSettings)
-#   boxSettings.packStart(btnSetScan, false, true, 3)
-#   boxSettings.packStart(btnSetSchedule, false, true, 3)
-#   boxSettings.packStart(btnSetUpdate, false, true, 3)
-#   boxMain.packStart(boxSettings, false, true, 3)
-
 proc stop(w: Window) =
   mainQuit()
 
@@ -150,4 +126,7 @@ proc main =
   mainBoard.connect("destroy", stop) # TODO hide in icon tray
   gtk.main()
 
+
+
+loadsettings()
 main()

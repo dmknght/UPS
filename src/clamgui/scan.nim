@@ -3,7 +3,7 @@ import osproc
 import streams
 import strutils
 
-import ../ clamcontrol / controller
+import utils
 
 var
   globalChan: Channel[string]
@@ -61,7 +61,7 @@ proc createScan(path: string, title: string, b: Button, asRoot = false) =
   # TODO bug when process is completed. Close is above
   # TODO cancel or do something close windoww
   btnHide.setImage(imgMinimize)
-  btnHide.connect("clicked", controller.actionHide, scanDialog)
+  btnHide.connect("clicked", utils.actionHide, scanDialog)
 
   boxButtons.packStart(btnHide, false, true, 3)
   boxButtons.packStart(btnStop, false, true, 3)
