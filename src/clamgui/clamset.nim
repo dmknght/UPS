@@ -31,15 +31,6 @@ proc createDefaultSettings() =
   defSettings.writeConfig(configFile)
 
 
-proc actionSave(b: Button, d: Dialog) =
-  #[
-    Save the settings to the file and close dialog
-  ]#
-
-  clamSettings.writeConfig(configFile)
-  d.destroy()
-
-
 proc loadsettings*() =
   #[
     Check if setting folder is created
@@ -58,6 +49,15 @@ proc loadsettings*() =
   if not fileExists(configFile):
     createDefaultSettings()
   clamSettings = loadConfig(configFile)
+
+
+proc actionSave(b: Button, d: Dialog) =
+  #[
+    Save the settings to the file and close dialog
+  ]#
+
+  clamSettings.writeConfig(configFile)
+  d.destroy()
 
 
 proc actionClickSetting(b: CheckButton, settings: tuple[section, key: string]) =
