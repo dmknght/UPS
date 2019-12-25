@@ -12,7 +12,6 @@ proc sectionScan(boxMain: Box) =
     btnFullScan = newButton("Full Scan")
     btnCustomScan = newButton("Custom Scan")
     # icons
-    # imgHomeScan = newImageFromIconName("gtk-find-and-replace", 3)
     imgHomeScan = newImageFromIconName("go-home", 3)
     imgFullScan = newImageFromIconName("system-search", 3)
     imgCustomScan = newImageFromIconName("folder-new", 3)
