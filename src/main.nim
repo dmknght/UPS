@@ -90,7 +90,7 @@ proc sectionSettings(boxMain: Box) =
   let
     labelSettings = newLabel("Settings")
     boxSettings = newBox(Orientation.horizontal, 5)
-    btnClamSet = newButton("ClamAV Settings")
+    btnClamSet = newButton("ClamAV")
     # TODO image for clam settings
   
   labelSettings.setXalign(0.0)
