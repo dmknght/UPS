@@ -2,6 +2,7 @@ import gintro / [gtk, gobject, gtksource]
 import utils
 import parsecfg
 import os
+import strutils
 
 
 var clamSettings: Config
@@ -23,9 +24,9 @@ proc createDefaultSettings() =
 
   var
     defSettings = newConfig() # type: Config
-  defSettings.setSectionKey("Scan", "Scan Byte Code", "1")
-  defSettings.setSectionKey("Scan", "Scan PUA", "1")
-  defSettings.setSectionKey("Scan", "Scan Mail Files", "1")
+  defSettings.setSectionKey("Scan", "ScanByteCode", "1")
+  defSettings.setSectionKey("Scan", "ScanPUA", "1")
+  defSettings.setSectionKey("Scan", "ScanMailFiles", "1")
 
   defSettings.writeConfig(configFile)
 
@@ -45,6 +46,7 @@ proc loadsettings*() =
     createDir(quaratineFolder)
     # TODO handle both no setting and load setting in 1 place and it can access with both functions
     # TODO handle restore default config buttons
+  if not fileExists(configFile):
     createDefaultSettings()
   clamSettings = loadConfig(configFile)
 
@@ -70,11 +72,12 @@ proc actionSave(b: Button, d: Dialog) =
   d.destroy()
 
 
-proc initSetButtonCheck(b: CheckButton, s1: string, s2:string) =
-  b.setLabel(s2)
-  if clamSettings.getSectionValue(s1, s2) == "1":
+proc initSetButtonCheck(b: CheckButton, section: string, label:string) =
+  b.setLabel(label)
+  let key = label.replace(" ", "")
+  if clamSettings.getSectionValue(section, key) == "1":
     b.setActive(true)
-  b.connect("clicked", actionClickSetting, (s1, s2))
+  b.connect("clicked", actionClickSetting, (section, key))
 
 
 proc actionInitProxyAddr(b: CheckButton, setProxy: tuple[pAddr, pPort: View]) =
@@ -96,13 +99,15 @@ proc setUpdate(b: Box) =
     Render the update tab in setting dialog
   ]#
 
-  # TODO fix border of txtAddr and txtPort or change object
+  # BUG addr and port field is invisible because of system theme
+  # TODO radio button to check: no proxy, system proxy, custom proxy
+  # TODO radio button to select: No auto update, auto check update, auto apply update
   # TODO save values of addr
   let
     boxSettings = newBox(Orientation.vertical, 3)
     btnDoAutoUpdate = newCheckButton()
     btnDoProxy = newCheckButton()
-    labelProxy = newLabel("Proxy setting")
+    labelProxy = newLabel("Proxy Setting")
 
     addrBox = newBox(Orientation.vertical, 0)
     labelAddr = newLabel("Address")
@@ -179,17 +184,17 @@ proc popSettings*(b: Button) =
 
     boxButtons = newBox(Orientation.horizontal, 3)
     btnCancel = newButton("Cancel")
-    btnSave = newButton("Save")
+    btnApply = newButton("Apply")
     imgSave = newImageFromIconName("dialog-ok", 3)
     imgCancel = newImageFromIconName("edit-clear", 3)
 
-  btnSave.setImage(imgSave)
+  btnApply.setImage(imgSave)
   btnCancel.setImage(imgCancel)
 
   btnCancel.connect("clicked", utils.actionCancel, setDialog)
-  btnSave.connect("clicked", actionSave, setDialog)
+  btnApply.connect("clicked", actionSave, setDialog)
 
-  boxButtons.packStart(btnSave, false, true, 3)
+  boxButtons.packStart(btnApply, false, true, 3)
   boxButtons.packStart(btnCancel, false, true, 3)
 
   setDialog.setTitle("ClamAV Settings")
