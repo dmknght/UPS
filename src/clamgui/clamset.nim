@@ -66,9 +66,8 @@ proc updatePortSetting(b: SpinButton, setting: tuple[section, key: string]) =
   clamSettings.setSectionKey(setting.section, setting.key, intToStr(buttonValue))
 
 
-# proc updateAddrSetting(b: TextBuffer, setting: tuple[section, key: string]) =
-#   let addrValue = b.getText(b.getStartIter, b.getEndIter)
-#   clamSettings.setSectionKey(setting.section, setting.key, addrValue)
+proc updateAddrSetting(e: Entry, setting: tuple[section, key: string]) =
+  clamSettings.setSectionKey(setting.section, setting.key, e.getText())
 
 
 proc actionClickSetting(b: CheckButton, setting: tuple[section, key: string]) =
@@ -94,7 +93,7 @@ proc initSetButtonCheck(b: CheckButton, section: string, label:string) =
   b.connect("clicked", actionClickSetting, (section, key))
 
 
-proc actionInitProxyAddr(b: CheckButton, setProxy: tuple[pAddr: TextView, pPort: SpinButton]) =
+proc actionInitProxyAddr(b: CheckButton, setProxy: tuple[pAddr: Entry, pPort: SpinButton]) =
   #[
     Focus, unfocus field of address and port
   ]#
@@ -107,7 +106,7 @@ proc actionInitProxyAddr(b: CheckButton, setProxy: tuple[pAddr: TextView, pPort:
     setProxy.pPort.setSensitive(false)
 
 
-proc actionSetProxy(b: CheckButton, args: tuple[header, key: string, pAddr: TextView, pPort: SpinButton]) =
+proc actionSetProxy(b: CheckButton, args: tuple[header, key: string, pAddr: Entry, pPort: SpinButton]) =
   #[
     Change value of set proxy settings
     And focus / unfocus view fields
@@ -135,8 +134,8 @@ proc setUpdate(b: Box) =
     addrBox = newBox(Orientation.vertical, 0)
     labelAddr = newLabel("Address")
     labelPort = newLabel("Port")
-    setProxyAddr = newTextView()
-    valueProxyAddr = setProxyAddr.getBuffer()
+    valueProxyAddr = newEntryBuffer("", 64)
+    setProxyAddr = newEntryWithBuffer(valueProxyAddr)
     setProxyPort = newSpinButtonWithRange(1, 65535, 1)
 
   labelProxy.setXalign(0.0)
@@ -164,7 +163,7 @@ proc setUpdate(b: Box) =
   if addrFromSetting != "":
     valueProxyAddr.setText(addrFromSetting, len(addrFromSetting))
 
-  # valueProxyAddr.connect("value-changed", updateAddrSetting, ("Update", "Address"))
+  # setProxyAddr.connect("inserted-text", updateAddrSetting, ("Update", "Address"))
   setProxyPort.connect("value-changed", updatePortSetting, ("Update", "Port"))
 
   addrBox.packStart(labelProxy, false, true, 3)
