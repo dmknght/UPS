@@ -72,7 +72,6 @@ proc actionClickSetting(b: CheckButton, settings: tuple[section, key: string]) =
     clamSettings.setSectionKey(settings.section, settings.key, "0")
 
 
-
 proc initSetButtonCheck(b: CheckButton, section: string, label:string) =
   #[
     Set label for the button and generate value for settings automatically
@@ -223,5 +222,3 @@ proc popSettings*(b: Button) =
   areaSet.packStart(boxButtons, false, true, 3)
 
   setDialog.showAll
-
-  

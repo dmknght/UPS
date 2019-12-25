@@ -33,11 +33,13 @@ proc watchProc(interval: tuple[path: string]) {.thread.} =
       let msg = "Scan completed!\nScanned: " & intToStr(numScan) & " Clean: " & intToStr(numClean) & " Found: " & intToStr(numInfect)
       globalChan.send(msg)
 
+
 proc recvCb(scanLabel: Label): bool = 
   let data = globalChan.tryRecv()
   if data[0]:
     scanLabel.setText(data[1])
   return SOURCE_CONTINUE
+
 
 proc createScan(path: string, title: string, b: Button, asRoot = false) =
   let
@@ -78,7 +80,8 @@ proc createScan(path: string, title: string, b: Button, asRoot = false) =
   globalChan.open()
   createThread(watcherThread, watchProc, (path,))
   scanDialog.showAll
-  
+
+
 proc homeScan*(b: Button) =
   # TODO get environment path
   let
@@ -87,11 +90,13 @@ proc homeScan*(b: Button) =
   # TODO handle stop
   createScan(path, title, b)
 
+
 proc fullScan*(b: Button) =
   let
     path = "/"
     title = "Scanning System"
   createScan(path, title, b, asRoot = true)
+
 
 proc customScan*(b: Button) =
   let

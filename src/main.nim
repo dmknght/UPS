@@ -44,6 +44,7 @@ proc sectionScan(boxMain: Box) =
   # Add scan box to main box
   boxMain.packStart(boxScan, false, true, 3)
 
+
 proc sectionProtection(boxMain: Box) =
   let
     labelProtection = newLabel("Protection")
@@ -69,6 +70,7 @@ proc sectionProtection(boxMain: Box) =
   # boxProtection.packStart(btnFirewall, false, true, 3)
   boxMain.add(boxProtection)
 
+
 proc sectionHistory(boxMain: Box) =
   let
     labelHistory = newLabel("History")
@@ -84,6 +86,7 @@ proc sectionHistory(boxMain: Box) =
   boxHistory.packStart(btnLog, false, true, 3)
   boxHistory.packSTart(btnQuaratine, false, true, 3)
   boxMain.add(boxHistory)
+
 
 proc sectionSettings(boxMain: Box) =
   let
